@@ -1,0 +1,37 @@
+{
+  "header": "ROOT NODE",
+  "short_desc": "",
+  "long_desc": "",
+  "subquests": [
+    {
+      "header": "Exercise",
+      "short_desc": "Strong body strong mind.",
+      "long_desc": "",
+      "subquests": [],
+      "id": -1
+    },
+    {
+      "header": "Just Dungeons",
+      "short_desc": "Project for resume.",
+      "long_desc": "",
+      "subquests": [],
+      "id": -1
+    },
+    {
+      "header": "Valyrian",
+      "short_desc": "An exercise to spite utility.",
+      "long_desc": "",
+      "subquests": [
+        {
+          "header": "Make flashcards",
+          "short_desc": "Finish vocab list.",
+          "long_desc": "",
+          "subquests": [],
+          "id": -1
+        }
+      ],
+      "id": -1
+    }
+  ],
+  "id": -1
+}
