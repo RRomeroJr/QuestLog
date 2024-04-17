@@ -25,6 +25,8 @@ TOPARERNTBUTTON = "p"
 INCREASELEVELBUTTON = "+"
 DECREASELEVELBUTTON = "-"
 SAVEBUTTON = "w"
+ADDQUEST = "a"
+REMOVEQUEST = "r"
 def display_subquests():
     os.system("cls")
     print("{}: {}".format(displayNode.header, displayNode.short_desc))
@@ -36,17 +38,17 @@ def display_subquests():
         count += 1
 def choose_quest():
     global displayNode
-    choice = input("Enter quest number that you would like to select")
+    choice = input("Enter quest number that you would like to select: ")
     loop = True
     while(loop):
         if(not choice.isnumeric()):
             display_subquests()
             print("You did not enter a number")
-            choice = input("Enter quest number that you would like to select")
+            choice = input("Enter quest number that you would like to select: ")
         elif((int(choice) <= 0) or (int(choice) > len(displayNode.subquests))):
             display_subquests()
             print("You're choice was out of range")
-            choice = input("Enter quest number that you would like to select")
+            choice = input("Enter quest number that you would like to select: ")
         else:
             loop = False
     return displayNode.subquests[int(choice) - 1]
@@ -83,6 +85,45 @@ def save():
     with open('QuestNodes.json', 'w') as qnFile:
         result = json.dumps(root, cls= QuestNodeEncoder, indent=2)
         qnFile.write(result)
+
+def add_quest():
+    global displayNode
+    cancle = False
+    _input = ""
+    _in_header = None
+    _in_short = None
+    _in_long = None
+    
+    _in_header = input("Header (REQ):")
+    if _in_header == "":
+        return
+    
+    _in_short = input("Short Description (opt):")
+
+    _in_long = input("Long Description (opt):")
+    
+    newQuest = QuestNode(_header=_in_header, _short_desc=_in_short, _long_desc=_in_long)
+    displayNode.subquests.append(newQuest)
+    newQuest.parent = displayNode
+    return
+
+def remove_quest():
+    selectedQuest = choose_quest()
+    assert selectedQuest != root
+    if(selectedQuest != None):
+        recursive_delete(selectedQuest)
+    
+    input("Anything to continue..")
+
+def recursive_delete(_quest):
+    print("deleting {}".format(_quest.header))
+    while len(_quest.subquests) > 0:
+        recursive_delete(_quest.subquests[0])
+    
+    _quest.parent.subquests.remove(_quest)
+    del _quest
+    return
+
 def display_options():
     global displayNode
     global root
@@ -107,6 +148,10 @@ def display_options():
     add_separator_if_needed()
     to_return += "{} = save".format(SAVEBUTTON)
     add_separator_if_needed()
+    to_return += "{} = add".format(ADDQUEST)
+    add_separator_if_needed()
+    to_return += "{} = remove".format(REMOVEQUEST)
+    add_separator_if_needed()
     to_return += "{} = quit".format(QUITBUTTON)
     return to_return
 def main():
@@ -114,7 +159,7 @@ def main():
     opt = ""
     while(run):
         display_subquests()
-        opt = input(display_options()).lower()
+        opt = input(display_options() + "\n").lower()
         if(opt == SELECTBUTTON):
             select_subquest_loop()
         elif (opt == TOPARERNTBUTTON):
@@ -125,6 +170,10 @@ def main():
             decrease_level()
         elif(opt == SAVEBUTTON):
             save()
+        elif(opt == ADDQUEST):
+            add_quest()
+        elif(opt == REMOVEQUEST):
+            remove_quest()
         elif(opt == QUITBUTTON):
             run = False
 
