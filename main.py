@@ -1,20 +1,7 @@
 import json
 from QuestNode import *
 import os
-class QuestNodeEncoder(json.JSONEncoder):
-    def default(self, o):
-        if isinstance(o, QuestNode):
-            
-            _subquests = [] # Needed to make the deafult an empty array instead of None
-            if(len(o.subquests) > 0):
-                for sq in o.subquests:
-                    _subquests.append(self.default(sq))
 
-            # Getting a dict obj. Dicts become JSON objects
-            return {"header": o.header, "short_desc": o.short_desc, "long_desc": o.long_desc, "subquests": _subquests, "id": o.id}
-
-        return super().default(o) #This is make the Encoder Error out.
-tempOpts = []
 # root = QuestNode(_header="ROOT NODE")
 with open("QuestNodes.json", "r") as file:
     root = QuestNode.fromdict(json.loads(file.read()))
@@ -36,7 +23,7 @@ def display_subquests():
             for ssq in sq.subquests:
                 print("- {}".format(ssq.header))
         count += 1
-def choose_quest():
+def choose_quest(): # --check: would be nice if I could have prompts here. and a way to cancle
     global displayNode
     choice = input("Enter quest number that you would like to select: ")
     loop = True
@@ -52,7 +39,7 @@ def choose_quest():
         else:
             loop = False
     return displayNode.subquests[int(choice) - 1]
-def select_subquest_loop():
+def select_subquest_loop():  # --revise: remove this what was in here is now in choose_quest
     select_subquest(choose_quest())
 def select_subquest(_in_quest):
     global displayNode
