@@ -1,7 +1,9 @@
 # QuestLog
 
 <b>A quest log for real life to help organize your thoughts.</b>
-| Requirements | Knowlege learned or reinforced |
+<br>
+<br>
+| Requirements | Knowlege Learned or Reinforced |
 |-|-|
 | - Python (at least version 3.9.6)    | - python <br> - git <br> - json
 
